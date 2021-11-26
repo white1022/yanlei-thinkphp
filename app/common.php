@@ -216,5 +216,3 @@ function handle_crc_str($crc_str)
     echo '$new_crc_str = ' . $new_crc_str . PHP_EOL;
     return $new_crc_str;
 }
-
-//测试提交
