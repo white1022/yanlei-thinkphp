@@ -10,5 +10,6 @@ use think\model\Pivot;
  */
 class Access extends Pivot
 {
-    //
+    //中间表模型开启时间戳字段自动写入
+    protected $autoWriteTimestamp = true;
 }

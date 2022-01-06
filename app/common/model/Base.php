@@ -21,6 +21,18 @@ class Base extends Model
     }
 
     /*
+     * 删除域名前缀
+     */
+    protected function originUrl($value, $data)
+    {
+        $finalUrl = $value;
+        if(strstr($value, Request::domain())){
+            $finalUrl = substr($value, strlen(Request::domain()));
+        }
+        return $finalUrl;
+    }
+
+    /*
      * 获取IP地址
      */
     protected function ipAddress($value, $data)

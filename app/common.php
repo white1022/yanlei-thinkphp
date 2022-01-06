@@ -31,7 +31,8 @@ function decryption($data)
 /*
  * 生成无限极分类树
  */
-function generateTree($array = []){
+function generateTree($array = [])
+{
     /*$array = array(
         array('id' => 1, 'name' => '超级管理员', 'pid' => '0', 'level' =>0) ,
         array('id' => 2, 'name' => '二级组', 'pid' => '1', 'level' =>1) ,
@@ -48,7 +49,7 @@ function generateTree($array = []){
     $tree = array();
     foreach($items as $key => $item){
         if(isset($items[$item['pid']])){
-            $items[$item['pid']]['child'][] = &$items[$key];
+            $items[$item['pid']]['children'][] = &$items[$key];
         }else{
             $tree[] = &$items[$key];
         }
@@ -61,15 +62,16 @@ function generateTree($array = []){
  * 获取地区树
  * 数据 $data
  * 父级 $pid
- * 层级 $rank
+ * 层级 $level
  */
-function getRegionTree($data, $pid=0, $rank=0){
+function getRegionTree($data, $pid = 0, $level = 0)
+{
     static $tree = array();
     foreach($data as $k=>$v){
         if($v['pid'] == $pid){
-            $v['rank'] = $rank;
+            $v['level'] = $level;
             $tree[]=$v;
-            getRegionTree($data,$v['id'],$rank+1);
+            getRegionTree($data,$v['id'],$level+1);
         }
     }
     //这里树形结构已经生成 使用递归方法
@@ -81,14 +83,14 @@ function getRegionTree($data, $pid=0, $rank=0){
  * page  页码
  * limit 每页显示条数
  */
-function get_page_limit()
+function get_page_limit() :array
 {
-    return [input('get.page', 1), input('get.limit', 15)];
+    return [input('get.page/d', 1), input('get.limit/d', 15)];
 }
 
 /*
  * 返回请求数据
- * $code 状态码（200成功，400失败）
+ * $code 状态码（200成功，400失败，401登录状态失效）
  * $message 提示消息（支持多语言）
  * $data 数据
  * $count 数据总数，可选项 如果是渲染layui的table则需要此字段
@@ -97,11 +99,28 @@ function returnResponse($code = 200, $message = '', $data = [], $count = null)
 {
     //dump($message);exit();
     $array['code'] = $code;
-    $array['message'] = lang($message);
+    $array['message'] = $message; //lang($message)
     $array['data'] = $data;
     !is_null($count) && $array['count'] = $count;
     return json($array, 200);
 }
+
+/*
+ * 返回请求数据
+ * code 状态码（200成功，400失败）
+ * message 提示消息（支持多语言）
+ * data 数据
+ * count 数据总数，可选项 如果是渲染layui的table则需要此字段
+ */
+/*function returnResponse($array = [])
+{
+    //dump($message);exit();
+    $code = $array['code'] ?? 200;
+    $data['message'] = $array['message'] ?? ''; //lang($array['message'])
+    $data['data'] = $array['data'] ?? [];
+    isset($array['count']) && $data['count'] = $array['count'];
+    return json($data, $code);
+}*/
 
 /*
  * 语言切换
@@ -122,6 +141,20 @@ function change_lang($type)
             break;
     }
     return $lang;
+}
+
+/*
+ * 获取/采集图标
+ */
+function get_icon()
+{
+    //如果缓存为空、则写入文件
+    //$url = "http://fontawesome.dashgame.com/";
+    $url = "https://layui.itze.cn/doc/element/icon.html#table";
+    $content = file_get_contents($url);
+    //preg_match_all('/<i\s+class="fa\s+([^"]+)"\s+aria-hidden="true">/is', $content, $icon);
+    preg_match_all('/<i\s+class="layui-icon\s+([^"]+)">/is', $content, $icon);
+    return $icon[1] ?? [];
 }
 
 /*
@@ -215,4 +248,47 @@ function handle_crc_str($crc_str)
     $new_crc_str = $array[1] . $array[0];
     echo '$new_crc_str = ' . $new_crc_str . PHP_EOL;
     return $new_crc_str;
+}
+
+/**
+ * PHP精确计算  主要用于货币的计算用
+ * @param $n1 第一个数
+ * @param $symbol 计算符号 + - * / %
+ * @param $n2 第二个数
+ * @param string $scale  精度 默认为小数点后两位
+ * @return  string
+ */
+function pricecalc($n1, $symbol, $n2, $scale = '2')
+{
+    $res = "";
+    switch ($symbol) {
+        case "+"://加法
+            $res = bcadd($n1, $n2, $scale);
+            break;
+        case "-"://减法
+            $res = bcsub($n1, $n2, $scale);
+            break;
+        case "*"://乘法
+            $res = bcmul($n1, $n2, $scale);
+            break;
+        case "/"://除法
+            $res = bcdiv($n1, $n2, $scale);
+            break;
+        case "%"://求余、取模
+            $res = bcmod($n1, $n2, $scale);
+            break;
+        default:
+            $res = "";
+            break;
+    }
+    return $res;
+}
+
+
+/**
+ * 价格格式化
+ * @param int $price
+ */
+function priceformat($price){
+    return number_format($price, 2, '.', '');
 }

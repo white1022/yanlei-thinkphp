@@ -4,35 +4,92 @@ declare (strict_types = 1);
 namespace app\admin\controller;
 
 use app\common\service\Admin as AdminService;
-use app\common\service\Storage as StorageService;
+use app\common\validate\Admin as AdminValidate;
+use think\facade\Request;
 use think\response\Json;
 
 class Admin extends Base
 {
     /*
-     * 显示资源列表
+     * 列表
      */
-    public function index() :Json
+    public function lists() :Json
     {
-        $list = AdminService::getList();
-        return json($list);
-    }
-
-    public function info() :Json
-    {
-        $info = AdminService::getAdminInfoByCache($this->adminId);
-        $info && $info['roles'] = 'admin';
-        return json($info);
+        list($data, $count) = AdminService::getAdminList();
+        return returnResponse(200, '成功', $data, $count);
     }
 
     /*
-     * 上传
+     * 添加
      */
-    public function upload() :Json
+    public function add() :Json
     {
-        $url = StorageService::upload();
-        return json(['url' => $url]);
+        (new AdminValidate())->goCheck('add');
+        AdminService::addEditAdminInfo();
+        return returnResponse(200, '成功', []);
     }
+
+    /*
+     * 修改
+     */
+    public function edit() :Json
+    {
+        (new AdminValidate())->goCheck('edit');
+        AdminService::addEditAdminInfo();
+        return returnResponse(200, '成功', []);
+    }
+
+    /*
+     * 删除
+     */
+    public function delete() :Json
+    {
+        (new AdminValidate())->goCheck('delete');
+        AdminService::deleteAdminInfo();
+        return returnResponse(200, '成功', []);
+    }
+
+    /*
+     * 获取侧边栏菜单
+     */
+    public function getMenu() :Json
+    {
+        $list = AdminService::getMenuByAdminId($this->adminId);
+        return returnResponse(200, '成功', $list);
+    }
+
+    /*
+     * 获取管理员信息
+     */
+    public function info() :Json
+    {
+        $info = AdminService::getAdminInfoByCache($this->adminId);
+        return returnResponse(200, '成功', $info);
+    }
+
+    /*
+     * 获取角色
+     */
+    public function role() :Json
+    {
+        $list = AdminService::getRoleList();
+        return returnResponse(200, '成功', $list);
+    }
+
+    /*
+     * 修改密码
+     */
+    public function password() :Json
+    {
+        (new AdminValidate())->goCheck('password');
+        AdminService::changeAdminPassword();
+        return returnResponse(200, '成功', []);
+    }
+
+
+
+
+
 
 
 }

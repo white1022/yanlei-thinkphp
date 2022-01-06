@@ -17,7 +17,7 @@ class User extends Base
     }
     public function getIsUseTextAttr($value, $data)
     {
-        $is_use = [0=>'否',1=>'是'];
+        $is_use = [1=>'是',2=>'否'];
         return $is_use[$data['is_use']];
     }
 

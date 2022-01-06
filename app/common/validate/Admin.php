@@ -14,17 +14,17 @@ class Admin extends Base
      * @var array
      */
 	protected $rule = [
-        'id' => ['require', 'num'=>'number'],
+        'id' => ['require'],
         'nickname' => ['require', 'min' => 2, 'max' => 8],
         'avatar' => ['require'],
-        'email' => ['require', 'email'=>'email'],
+        'email' => ['require', 'email'],
         'password' => ['require', 'min' => 5],
-        'mobile' => ['require', 'mobile'=>'mobile'],
+        'mobile' => ['require', 'mobile'],
         'name' => ['require', 'min' => 2],
-        'is_use' => ['require', 'in'=>'0,1'],
-        'lang' => ['require', 'in'=>'zh-cn,en-us'],
-        'role_id' => ['require', 'num'=>'number'], //用于新增中间表数据
-        'reset_password' => ['min' => 5], //用于重置密码
+        'is_use' => ['require', 'in' => '1,2'],
+        'lang' => ['require', 'in' => 'zh-cn,en-us'],
+        'role' => ['require', 'array'], //用于中间表数据
+        'confirm_password' => ['require', 'min' => 5, 'confirm'=> 'password'], //用于确认密码
     ];
 
     /**
@@ -33,9 +33,7 @@ class Admin extends Base
      *
      * @var array
      */
-    protected $message = [
-
-    ];
+    protected $message = [];
 
     /**
      * 验证场景
@@ -45,10 +43,11 @@ class Admin extends Base
     protected $scene = [
         'login'  =>  ['email','password'],
         'lang'  =>  ['lang'],
-        'add'  =>  ['email','password','role_id'],
-        'edit'  =>  ['id','nickname','avatar','email','password'],
+        'add'  =>  ['nickname','avatar','email','mobile','password','name','role'],
+        'edit'  =>  ['id','nickname','avatar','email','mobile','name','role'],
         'delete'  =>  ['id'],
         'is_use'  =>  ['id','is_use'],
+        'password'  =>  ['id','password', 'confirm_password'],
         'account'  =>  ['id','nickname','avatar','email','mobile','reset_password','name'],
     ];
 }

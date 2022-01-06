@@ -182,7 +182,7 @@ class Jwt
             //->setId($this->jti, true) // Configures the id (jti claim), replicating as a header item
             ->setIssuedAt($time) // Configures the time that the token was issued (iat claim)
             //->setNotBefore($time + 60) // Configures the time that the token can be used (nbf claim)
-            ->setExpiration($time + 3600) // Configures the expiration time of the token (exp claim)
+            ->setExpiration($time + 12*60*60) // Configures the expiration time of the token (exp claim)
             ->set('table_name', $this->tableName) // Configures a new claim, called "uid"
             ->set('table_id', $this->tableId) // Configures a new claim, called "uid"
             ->sign(new Sha256(), $this->secret)

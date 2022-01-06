@@ -34,6 +34,7 @@ class Storage
      */
     public static function download(string $file_name = '', string $name = '') :File
     {
+        // todo 不知道有没有自动加上前缀 Request::domain()
         return download($file_name, $name);
     }
 }

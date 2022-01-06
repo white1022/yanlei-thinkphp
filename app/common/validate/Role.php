@@ -13,7 +13,12 @@ class Role extends Base
      *
      * @var array
      */
-	protected $rule = [];
+	protected $rule = [
+        'id' => ['require'],
+        'name' => ['require'],
+        'rules' => ['require'],
+        'is_use' => ['require', 'in'=>'1,2'],
+    ];
 
     /**
      * 定义错误信息
@@ -22,4 +27,15 @@ class Role extends Base
      * @var array
      */
     protected $message = [];
+
+    /**
+     * 验证场景
+     *
+     * @var array
+     */
+    protected $scene = [
+        'add'  =>  ['name','rules','is_use'],
+        'edit'  =>  ['id','name','rules','is_use'],
+        'delete'  =>  ['id'],
+    ];
 }

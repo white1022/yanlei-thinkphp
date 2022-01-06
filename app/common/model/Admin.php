@@ -17,11 +17,15 @@ class Admin extends Base
     }
     public function getIsUseTextAttr($value, $data)
     {
-        $is_use = [0=>'否',1=>'是'];
+        $is_use = [1=>'是',2=>'否'];
         return $is_use[$data['is_use']];
     }
 
     //修改器
+    public function setAvatarAttr($value, $data)
+    {
+        return $this->originUrl($value, $data);
+    }
     public function setLastLoginIpAttr($value, $data)
     {
         return $this->ipAddress($value, $data);

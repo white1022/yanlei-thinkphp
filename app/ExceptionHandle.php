@@ -79,7 +79,9 @@ class ExceptionHandle extends Handle
             'error_code' => $this->errorCode,
             'request_url' => $request->url(),
         ];
-        return json($result, $this->httpCode);
+        //return json($result, $this->httpCode);
+        //根据前端要求修改返回的数据格式
+        return returnResponse($this->httpCode, $this->errorMessage, ['request_url' => $request->url()]);
     }
 
     /*

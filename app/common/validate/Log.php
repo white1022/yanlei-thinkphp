@@ -14,9 +14,9 @@ class Log extends Base
      * @var array
      */
 	protected $rule = [
-        'id' => ['require', 'num'=>'number'],
+        'id' => ['require'],
         'type' => ['require', 'in'=>'1,2'],
-        'operator_id' => ['require', 'num'=>'number'],
+        'operator_id' => ['require', 'number'],
         'content' => ['require'],
     ];
 
