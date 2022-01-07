@@ -25,6 +25,7 @@ class Admin extends Base
         'lang' => ['require', 'in' => 'zh-cn,en-us'],
         'role' => ['require', 'array'], //用于中间表数据
         'confirm_password' => ['require', 'min' => 5, 'confirm'=> 'password'], //用于确认密码
+        'old_password' => ['require', 'min' => 5], //用于修改密码，拿旧密码换新密码
     ];
 
     /**
@@ -48,6 +49,7 @@ class Admin extends Base
         'delete'  =>  ['id'],
         'is_use'  =>  ['id','is_use'],
         'password'  =>  ['id','password', 'confirm_password'],
-        'account'  =>  ['id','nickname','avatar','email','mobile','reset_password','name'],
+        'my_profile'  =>  ['nickname','avatar','email','mobile','name'],
+        'my_password'  =>  ['old_password','password','confirm_password'],
     ];
 }

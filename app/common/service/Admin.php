@@ -19,12 +19,13 @@ class Admin
     public static function getAdminInfoByCache(int $id = 0) :array
     {
         $redis = RedisService::getInstance();
-        $cacheInfo = $redis->get('admin:'.$id);
+        $key = 'admin:'.$id;
+        $cacheInfo = $redis->get($key);
         if (!$cacheInfo) {
             $admin = AdminModel::findOrEmpty($id);
             if($admin->isEmpty()) throw new BadRequestException(['errorMessage' => '管理员不存在或已删除']);
             $admin = $admin->toArray();
-            $redis->setex('admin:'.$id, 3600, json_encode($admin)); //缓存3600秒
+            $redis->setex($key, 3600, json_encode($admin)); //缓存3600秒
         } else {
             $admin = json_decode($cacheInfo, true);
         }
@@ -47,8 +48,6 @@ class Admin
         //登录成功 更新登录时间以及登录IP
         $admin->last_login_time = time();
         if(!$admin->save()) throw new BadRequestException(['errorMessage' => '数据更新失败']);
-        //写入日志
-        LogService::save(1, $admin->id, '登入');
         //写入缓存
         $redis = RedisService::getInstance();
         $redis->setex('admin:'.$admin->id, 3600, json_encode($admin->toArray())); //缓存3600秒
@@ -74,11 +73,8 @@ class Admin
      */
     public static function deleteCacheByAdminId(int $id = 0) :void
     {
-        //写入日志
-        LogService::save(1, $id, '登出');
-        //删除缓存
         $redis = RedisService::getInstance();
-        $redis->del('admin:'.$id);
+        $redis->del('admin:'.$id); //删除缓存
     }
 
     /*
@@ -146,12 +142,30 @@ class Admin
         if(input('post.id')){
             $info = AdminModel::findOrEmpty(input('post.id'));
             if($info->isEmpty()) throw new BadRequestException(['errorMessage' => '数据不存在或已删除']);
+            $count = AdminModel::where([
+                ['id', '<>', $info->id],
+                ['email', '=', input('post.email')],
+            ])->count();
+            if($count) throw new BadRequestException(['errorMessage' => '邮箱已存在']);
+            $count = AdminModel::where([
+                ['id', '<>', $info->id],
+                ['mobile', '=', input('post.mobile')],
+            ])->count();
+            if($count) throw new BadRequestException(['errorMessage' => '电话已存在']);
             $res = $info->save(input('post.'));
             if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
             //更新关联的中间表数据
             $info->role()->detach();
             $info->role()->saveAll(input('post.role'));
         }else{
+            $count = AdminModel::where([
+                ['email', '=', input('post.email')],
+            ])->count();
+            if($count) throw new BadRequestException(['errorMessage' => '邮箱已存在']);
+            $count = AdminModel::where([
+                ['mobile', '=', input('post.mobile')],
+            ])->count();
+            if($count) throw new BadRequestException(['errorMessage' => '电话已存在']);
             $admin = new AdminModel();
             $res = $admin->save(input('post.'));
             if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
@@ -190,12 +204,59 @@ class Admin
     /*
      * 修改管理员密码
      */
-    public static function changeAdminPassword() :void
+    public static function editAdminPassword() :void
     {
         $info = AdminModel::findOrEmpty(input('post.id'));
         if($info->isEmpty()) throw new BadRequestException(['errorMessage' => '数据不存在或已删除']);
         $res = $info->save(input('post.'));
         if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
+    }
+
+    /*
+     * 修改我的资料
+     */
+    public static function editMyProfile(int $id = 0) :void
+    {
+        $info = AdminModel::findOrEmpty($id);
+        if($info->isEmpty()) throw new BadRequestException(['errorMessage' => '数据不存在或已删除']);
+        $count = AdminModel::where([
+            ['id', '<>', $info->id],
+            ['email', '=', input('post.email')],
+        ])->count();
+        if($count) throw new BadRequestException(['errorMessage' => '邮箱已存在']);
+        $count = AdminModel::where([
+            ['id', '<>', $info->id],
+            ['mobile', '=', input('post.mobile')],
+        ])->count();
+        if($count) throw new BadRequestException(['errorMessage' => '电话已存在']);
+        $res = $info->save(input('post.'));
+        if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
+        //更新缓存
+        $redis = RedisService::getInstance();
+        $key = 'admin:'.$info->id;
+        $cacheInfo = $redis->get($key);
+        if ($cacheInfo) {
+            $time = $redis->ttl($key); //返回剩余时间
+            $data = $info->toArray();
+            $redis->setex($key, $time, json_encode($data));
+        }
+
+    }
+
+    /*
+     * 修改我的密码
+     */
+    public static function editMyPassword(int $id = 0) :void
+    {
+        $info = AdminModel::findOrEmpty($id);
+        if($info->isEmpty()) throw new BadRequestException(['errorMessage' => '数据不存在或已删除']);
+        if(!password_verify(input('post.old_password'), $info->password)) throw new BadRequestException(['errorMessage' => '当前密码错误']);
+        if($info->password == password_hash(input('post.password'), PASSWORD_DEFAULT)) throw new BadRequestException(['errorMessage' => '当前密码和新密码相同']);
+        $res = $info->save(input('post.'));
+        if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
+        //删除缓存
+        $redis = RedisService::getInstance();
+        $redis->del('admin:'.$info->id);
     }
 
 

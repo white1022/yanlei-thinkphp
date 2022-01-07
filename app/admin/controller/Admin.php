@@ -82,10 +82,29 @@ class Admin extends Base
     public function password() :Json
     {
         (new AdminValidate())->goCheck('password');
-        AdminService::changeAdminPassword();
+        AdminService::editAdminPassword();
         return returnResponse(200, '成功', []);
     }
 
+    /*
+     * 修改我的资料
+     */
+    public function editMyProfile() :Json
+    {
+        (new AdminValidate())->goCheck('my_profile');
+        AdminService::editMyProfile($this->adminId);
+        return returnResponse(200, '成功', []);
+    }
+
+    /*
+     * 修改我的密码
+     */
+    public function editMyPassword() :Json
+    {
+        (new AdminValidate())->goCheck('my_password');
+        AdminService::editMyPassword($this->adminId);
+        return returnResponse(200, '成功', []);
+    }
 
 
 

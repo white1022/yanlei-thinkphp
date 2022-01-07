@@ -41,6 +41,8 @@ Route::group(function () {
         Route::rule('info', 'info', 'GET');
         Route::rule('password', 'password', 'POST');
         Route::rule('role', 'role', 'GET');
+        Route::rule('editMyProfile', 'editMyProfile', 'POST');
+        Route::rule('editMyPassword', 'editMyPassword', 'POST');
     })->prefix('Admin/');
 
     // rule分组

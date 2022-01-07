@@ -27,6 +27,7 @@ class Login extends Base
         (new AdminValidate())->goCheck('login');
         $admin = AdminService::getAdminInfoByLogin();
         $token = AdminService::getTokenById($admin->id);
+        LogService::save(1, $admin->id, '登入');
         //return json(['token' => $token]);
         return returnResponse(200, '成功', ['token' => $token]);
     }
@@ -37,6 +38,7 @@ class Login extends Base
     public function logout() :Json
     {
         AdminService::deleteCacheByAdminId($this->adminId);
+        LogService::save(1, $this->adminId, '登出');
         $this->adminId = 0;
         return returnResponse(200, '成功', []);
     }
