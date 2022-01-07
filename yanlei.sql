@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 06/01/2022 19:25:48
+ Date: 07/01/2022 20:41:34
 */
 
 SET NAMES utf8mb4;
@@ -28,13 +28,13 @@ CREATE TABLE `tp_access`  (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_access
 -- ----------------------------
-INSERT INTO `tp_access` VALUES (36, 1, 1, 1641459233, 1641459233);
 INSERT INTO `tp_access` VALUES (42, 2, 7, 1641460643, 1641460643);
+INSERT INTO `tp_access` VALUES (43, 1, 1, 1641559227, 1641559227);
 
 -- ----------------------------
 -- Table structure for tp_admin
@@ -55,12 +55,12 @@ CREATE TABLE `tp_admin`  (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_admin
 -- ----------------------------
-INSERT INTO `tp_admin` VALUES (1, 'admin', '/storage/20211230/b50561c2bb52eb81226874702cba906d.jpeg', 'admin@qq.com', '$2y$10$v/pfTMeTE3g7hinwDZuhg.tq0TG76UgEc6Nsb.XYq7fUzVAaCk44K', '18396837961', '管理员', 1, '112.231.121.39', 1641466597, 'en-us', 1608013736, 1641466597);
+INSERT INTO `tp_admin` VALUES (1, 'admin', '/storage/20220107/bf7e979a2d8f33c408b7dc9307f3e887.jpeg', 'admin@qq.com', '$2y$10$Y8jZegVKGWsf7LFEi1BpIOARpONZ3oPevGtmubP3BX1Nd0qSCwnf2', '18396837961', '管理员', 1, '112.231.121.39', 1641555864, 'en-us', 1608013736, 1641559227);
 INSERT INTO `tp_admin` VALUES (2, 'vWI7E22Y', '/storage/20220105/debc36d6aaf30aac61c7530a4005d35f.jpg', 'ceshi@qq.com', '$2y$10$Gqeo2/Vt1ZjBRsgGNsqYOuANEHxeKVmmEo598ufUYozuq7nRirrwS', '18396837963', '1111', 1, '223.104.191.175', 1641465909, 'en-us', 1608712304, 1641465909);
 
 -- ----------------------------
@@ -113,7 +113,7 @@ CREATE TABLE `tp_log`  (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 262 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_log
@@ -199,12 +199,12 @@ CREATE TABLE `tp_role`  (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_role
 -- ----------------------------
-INSERT INTO `tp_role` VALUES (1, '管理员', '1,2,3,4,5,6,7,8,9', 1, 1608013736, 1641459139);
+INSERT INTO `tp_role` VALUES (1, '管理员', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15', 1, 1608013736, 1641558529);
 INSERT INTO `tp_role` VALUES (7, '测试', '1,8,9', 1, 1641459154, 1641467705);
 
 -- ----------------------------
@@ -228,15 +228,21 @@ CREATE TABLE `tp_rule`  (
 -- ----------------------------
 -- Records of tp_rule
 -- ----------------------------
-INSERT INTO `tp_rule` VALUES (1, 0, '', '权限管理', 'layui-icon-component', '', 2, 100, 1641288964, 1641466581);
+INSERT INTO `tp_rule` VALUES (1, 0, '', '权限管理', 'layui-icon-component', '', 2, 100, 1641288964, 1641525523);
 INSERT INTO `tp_rule` VALUES (2, 1, '', '菜单管理', 'layui-icon-component', '', 2, 100, 1641288964, 0);
 INSERT INTO `tp_rule` VALUES (3, 2, '', '菜单列表', 'layui-icon-component', '/rule/list', 2, 100, 1641288964, 1641357322);
 INSERT INTO `tp_rule` VALUES (4, 1, '', '角色管理', 'layui-icon-component', '', 2, 100, 1641288964, 0);
 INSERT INTO `tp_rule` VALUES (5, 4, '', '角色列表', 'layui-icon-component', '/role/list', 2, 100, 1641288964, 0);
 INSERT INTO `tp_rule` VALUES (6, 1, '', '管理员管理', 'layui-icon-component', '', 2, 100, 1641288964, 0);
 INSERT INTO `tp_rule` VALUES (7, 6, '', '管理员列表', 'layui-icon-component', '/admin/list', 2, 100, 1641288964, 1641357328);
-INSERT INTO `tp_rule` VALUES (8, 1, '', '地区管理', 'layui-icon-component', '', 2, 100, 1641288964, 0);
-INSERT INTO `tp_rule` VALUES (9, 8, '', '地区列表', 'layui-icon-component', '/region/list', 2, 100, 1641288964, 0);
+INSERT INTO `tp_rule` VALUES (8, 0, '', '用户管理', 'layui-icon-component', '', 2, 100, 1641288964, 0);
+INSERT INTO `tp_rule` VALUES (9, 8, '', '用户列表', 'layui-icon-component', '/user/list', 2, 100, 1641288964, 0);
+INSERT INTO `tp_rule` VALUES (10, 0, '', '地区管理', 'layui-icon-component', '', 2, 100, 1641558140, 1641558140);
+INSERT INTO `tp_rule` VALUES (11, 10, '', '地区列表', 'layui-icon-component', '/region/list', 2, 100, 1641558179, 1641558179);
+INSERT INTO `tp_rule` VALUES (12, 0, '', '日志管理', 'layui-icon-component', '', 2, 100, 1641558293, 1641558293);
+INSERT INTO `tp_rule` VALUES (13, 12, '', '日志列表', 'layui-icon-component', '/log/list', 2, 100, 1641558315, 1641558315);
+INSERT INTO `tp_rule` VALUES (14, 0, '', '设置管理', 'layui-icon-component', '', 2, 100, 1641558360, 1641558360);
+INSERT INTO `tp_rule` VALUES (15, 14, '', '系统设置', 'layui-icon-component', '/systemSetup/form', 2, 100, 1641558421, 1641558421);
 
 -- ----------------------------
 -- Table structure for tp_system_setup
