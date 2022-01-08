@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 07/01/2022 20:41:34
+ Date: 08/01/2022 20:55:13
 */
 
 SET NAMES utf8mb4;
@@ -28,7 +28,7 @@ CREATE TABLE `tp_access`  (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_access
@@ -55,12 +55,12 @@ CREATE TABLE `tp_admin`  (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_admin
 -- ----------------------------
-INSERT INTO `tp_admin` VALUES (1, 'admin', '/storage/20220107/bf7e979a2d8f33c408b7dc9307f3e887.jpeg', 'admin@qq.com', '$2y$10$Y8jZegVKGWsf7LFEi1BpIOARpONZ3oPevGtmubP3BX1Nd0qSCwnf2', '18396837961', '管理员', 1, '112.231.121.39', 1641555864, 'en-us', 1608013736, 1641559227);
+INSERT INTO `tp_admin` VALUES (1, 'admin', '/storage/20220107/bf7e979a2d8f33c408b7dc9307f3e887.jpeg', 'admin@qq.com', '$2y$10$Y8jZegVKGWsf7LFEi1BpIOARpONZ3oPevGtmubP3BX1Nd0qSCwnf2', '18396837961', '管理员', 1, '112.231.121.39', 1641634688, 'en-us', 1608013736, 1641634688);
 INSERT INTO `tp_admin` VALUES (2, 'vWI7E22Y', '/storage/20220105/debc36d6aaf30aac61c7530a4005d35f.jpg', 'ceshi@qq.com', '$2y$10$Gqeo2/Vt1ZjBRsgGNsqYOuANEHxeKVmmEo598ufUYozuq7nRirrwS', '18396837963', '1111', 1, '223.104.191.175', 1641465909, 'en-us', 1608712304, 1641465909);
 
 -- ----------------------------
@@ -76,7 +76,7 @@ CREATE TABLE `tp_captcha`  (
   `create_time` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '验证码表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '验证码表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_captcha
@@ -90,12 +90,12 @@ INSERT INTO `tp_captcha` VALUES (2, '', '15910109322@163.com', '4501', 161397297
 DROP TABLE IF EXISTS `tp_dictionary`;
 CREATE TABLE `tp_dictionary`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '名称',
-  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '内容',
+  `key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '键',
+  `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '值',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '字典表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '字典表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_dictionary
@@ -113,11 +113,16 @@ CREATE TABLE `tp_log`  (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_log
 -- ----------------------------
+INSERT INTO `tp_log` VALUES (8, 1, 1, '登入', 1641609598, 1641609598);
+INSERT INTO `tp_log` VALUES (9, 1, 1, '登出', 1641609636, 1641609636);
+INSERT INTO `tp_log` VALUES (10, 1, 1, '登入', 1641609642, 1641609642);
+INSERT INTO `tp_log` VALUES (11, 1, 1, '登出', 1641634679, 1641634679);
+INSERT INTO `tp_log` VALUES (12, 1, 1, '登入', 1641634688, 1641634688);
 
 -- ----------------------------
 -- Table structure for tp_message
@@ -153,7 +158,7 @@ CREATE TABLE `tp_notice`  (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公告表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公告表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_notice
@@ -169,23 +174,21 @@ INSERT INTO `tp_notice` VALUES (4, '和感哈哈哈', '<p style=\"text-align: ce
 DROP TABLE IF EXISTS `tp_region`;
 CREATE TABLE `tp_region`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `pid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '上级id',
+  `pid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父级id',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '名称',
-  `level` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '层级',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地区表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地区表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_region
 -- ----------------------------
-INSERT INTO `tp_region` VALUES (1, 0, '济南', 0, 1608080964, 1608080964);
-INSERT INTO `tp_region` VALUES (2, 0, '枣庄', 0, 1608712789, 1608712789);
-INSERT INTO `tp_region` VALUES (3, 1, '长清', 1, 1608712810, 1608712810);
-INSERT INTO `tp_region` VALUES (5, 2, '枣庄市高新区', 1, 1608712902, 1608713114);
-INSERT INTO `tp_region` VALUES (6, 2, '薛城区', 1, 1608712921, 1608712921);
-INSERT INTO `tp_region` VALUES (7, 0, 'zzz', 0, 1610155289, 1610155289);
+INSERT INTO `tp_region` VALUES (1, 0, '山东省', 1641630141, 1641630192);
+INSERT INTO `tp_region` VALUES (2, 1, '济南市', 1641630206, 1641630206);
+INSERT INTO `tp_region` VALUES (3, 2, '高新区', 1641630231, 1641630231);
+INSERT INTO `tp_region` VALUES (4, 0, '上海市', 1641630256, 1641630282);
+INSERT INTO `tp_region` VALUES (5, 4, '嘉定区', 1641630271, 1641630271);
 
 -- ----------------------------
 -- Table structure for tp_role
@@ -199,7 +202,7 @@ CREATE TABLE `tp_role`  (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_role
@@ -223,7 +226,7 @@ CREATE TABLE `tp_rule`  (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '规则表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '规则表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_rule
@@ -253,15 +256,16 @@ CREATE TABLE `tp_system_setup`  (
   `site_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '网站名称',
   `site_icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '网站图标',
   `site_copyright` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '网站版权',
+  `site_detail` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '网站详情',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统设置表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统设置表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_system_setup
 -- ----------------------------
-INSERT INTO `tp_system_setup` VALUES (1, '', '', '', 1639540816, 0);
+INSERT INTO `tp_system_setup` VALUES (1, 'layuiAdmin', '/storage/20220107/bf7e979a2d8f33c408b7dc9307f3e887.jpeg', '© All Rights Reserved', '<p><img src=\"http://www.yanlei-thinkphp.com/storage/20220108/d679046ba4a0efad38f54f1550807c5c.jpg\" alt=\"\"></p><p>123132113</p><p>呵呵呵</p>', 1639540816, 1641642456);
 
 -- ----------------------------
 -- Table structure for tp_upgrade_package
@@ -275,7 +279,7 @@ CREATE TABLE `tp_upgrade_package`  (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '升级包表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '升级包表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_upgrade_package
@@ -289,35 +293,33 @@ INSERT INTO `tp_upgrade_package` VALUES (3, 1, '1.0.1', '/upload/2021-01-15/6000
 DROP TABLE IF EXISTS `tp_user`;
 CREATE TABLE `tp_user`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `admin_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管理员表id',
-  `agent_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '代理商表id',
   `nickname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '昵称，用于登录的账号名称',
   `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '密码，用于登录的账号密码',
   `socket_sid` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'socket连接标识',
+  `avatar` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '头像',
+  `email` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '邮箱',
+  `mobile` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '电话',
   `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '真实姓名',
   `identity_card` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '身份证号',
-  `mobile` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '手机号',
-  `email` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '邮箱',
   `sex` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '性别：0保密，1男，2女',
-  `avatar` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '头像',
   `province` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '省',
   `city` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '市',
   `area` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '区',
   `address` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '详细地址',
   `lang` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'zh-cn' COMMENT '语言类型',
-  `token` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '用于应用授权 类似于session_id',
-  `token_expire_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'token过期时间',
+  `token` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '【废弃】用于应用授权 类似于session_id',
+  `token_expire_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '【废弃】token过期时间',
   `last_login_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '最后登录IP',
   `last_login_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '最后登录时间',
   `is_use` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否启用：1是，2否',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_user
 -- ----------------------------
-INSERT INTO `tp_user` VALUES (12, 1, 0, '精工技术陈兵', '11ce2b1bed11f9e64aa86f728f2824f9', '', '', '', '', 'tec53@goldencell.biz', 0, '/upload/2021-03-15/604ee115c83eb.png', 0, 0, 0, '', 'zh-cn', '59ed2f92626ccd760c08df4e02888f06', 1616231196, '117.136.95.66', 1616144235, 1, 1615782174, 1616144830);
+INSERT INTO `tp_user` VALUES (12, '精工技术陈兵', '11ce2b1bed11f9e64aa86f728f2824f9', '', '/storage/20220105/debc36d6aaf30aac61c7530a4005d35f.jpg', 'tec53@goldencell.biz', '', '', '', 0, 0, 0, 0, '', 'zh-cn', '59ed2f92626ccd760c08df4e02888f06', 1616231196, '117.136.95.66', 1616144235, 1, 1615782174, 1616144830);
 
 SET FOREIGN_KEY_CHECKS = 1;
