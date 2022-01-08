@@ -3,61 +3,48 @@ declare (strict_types = 1);
 
 namespace app\admin\controller;
 
+use app\common\service\User as UserService;
+use app\common\validate\User as UserValidate;
+use think\response\Json;
+
 class User extends Base
 {
     /*
-     * 显示资源列表
+     * 列表
      */
-    public function index()
+    public function lists() :Json
     {
-
+        list($data, $count) = UserService::getUserList();
+        return returnResponse(200, '成功', $data, $count);
     }
 
     /*
-     * 显示创建资源表单页
+     * 添加
      */
-    public function create()
+    public function add() :Json
     {
-
+        (new UserValidate())->goCheck('add');
+        UserService::addUserInfo();
+        return returnResponse(200, '成功', []);
     }
 
     /*
-     * 保存新建的资源
+     * 修改
      */
-    public function save()
+    public function edit() :Json
     {
-
+        (new UserValidate())->goCheck('edit');
+        UserService::editUserInfo();
+        return returnResponse(200, '成功', []);
     }
 
     /*
-     * 显示指定的资源
+     * 删除
      */
-    public function read()
+    public function delete() :Json
     {
-
-    }
-
-    /*
-     * 显示编辑资源表单页
-     */
-    public function edit()
-    {
-
-    }
-
-    /*
-     * 保存更新的资源
-     */
-    public function update()
-    {
-
-    }
-
-    /*
-     * 删除指定资源
-     */
-    public function delete()
-    {
-
+        (new UserValidate())->goCheck('delete');
+        UserService::deleteUserInfo();
+        return returnResponse(200, '成功', []);
     }
 }

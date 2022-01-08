@@ -3,10 +3,10 @@
 
 namespace app\common\service;
 
+use app\common\exception\BadRequest as BadRequestException;
 use think\facade\Filesystem;
 use think\facade\Request;
 use think\response\File;
-use app\common\exception\BadRequest as BadRequestException;
 
 /*
  * 存储

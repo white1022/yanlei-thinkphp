@@ -3,7 +3,6 @@
 namespace app\common\service;
 
 use app\common\exception\BadRequest as BadRequestException;
-use app\common\model\Admin as AdminModel;
 use app\common\model\Rule as RuleModel;
 use app\common\service\Redis as RedisService;
 
@@ -51,6 +50,7 @@ class Rule
         if(input('post.id')){
             $info = RuleModel::findOrEmpty(input('post.id'));
             if($info->isEmpty()) throw new BadRequestException(['errorMessage' => '数据不存在或已删除']);
+            if($info->id == input('post.pid')) throw new BadRequestException(['errorMessage' => '父级不能为自己']);
             $res = $info->save(input('post.'));
         }else{
             $res = (new RuleModel())->save(input('post.'));

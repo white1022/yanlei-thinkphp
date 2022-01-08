@@ -3,8 +3,6 @@ declare (strict_types = 1);
 
 namespace app\common\validate;
 
-use think\Validate;
-
 class UpgradePackage extends Base
 {
     /**

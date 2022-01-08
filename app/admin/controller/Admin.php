@@ -5,7 +5,6 @@ namespace app\admin\controller;
 
 use app\common\service\Admin as AdminService;
 use app\common\validate\Admin as AdminValidate;
-use think\facade\Request;
 use think\response\Json;
 
 class Admin extends Base

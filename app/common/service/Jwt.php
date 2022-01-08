@@ -4,14 +4,11 @@ declare(strict_types=1);
 namespace app\common\service;
 
 use app\common\exception\BadRequest as BadRequestException;
-use app\common\model\User as UserModel;
-use app\common\model\Admin as AdminModel;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
-use think\Exception;
 
 
 /*

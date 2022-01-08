@@ -4,7 +4,6 @@ namespace app;
 use app\common\exception\Base as BaseException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
-use think\Exception;
 use think\exception\Handle;
 use think\exception\HttpException;
 use think\exception\HttpResponseException;

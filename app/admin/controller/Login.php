@@ -12,14 +12,6 @@ use think\response\Json;
 class Login extends Base
 {
     /*
-     * 登录页面
-     */
-    public function index()
-    {
-
-    }
-
-    /*
      * 登入
      */
     public function login() :Json

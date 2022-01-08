@@ -3,8 +3,6 @@ declare (strict_types = 1);
 
 namespace app\common\validate;
 
-use think\Validate;
-
 class Log extends Base
 {
     /**
@@ -34,7 +32,6 @@ class Log extends Base
      * 验证场景
      */
     protected $scene = [
-        'add'  =>  ['type','operator_id','content'],
         'delete'  =>  ['id'],
     ];
 }

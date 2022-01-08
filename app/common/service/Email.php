@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace app\common\service;
 
-use Swift_SmtpTransport;
 use Swift_Mailer;
 use Swift_Message;
+use Swift_SmtpTransport;
 
 /*
  * 邮箱

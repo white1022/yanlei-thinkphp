@@ -3,8 +3,6 @@ declare (strict_types = 1);
 
 namespace app\common\validate;
 
-use think\Validate;
-
 class SystemSetup extends Base
 {
     /**
@@ -13,7 +11,13 @@ class SystemSetup extends Base
      *
      * @var array
      */
-	protected $rule = [];
+	protected $rule = [
+        'id' => ['require'],
+        'site_name' => ['require'],
+        'site_icon' => ['require'],
+        'site_copyright' => ['require'],
+        'site_detail' => ['require'],
+    ];
 
     /**
      * 定义错误信息
@@ -22,4 +26,13 @@ class SystemSetup extends Base
      * @var array
      */
     protected $message = [];
+
+    /**
+     * 验证场景
+     *
+     * @var array
+     */
+    protected $scene = [
+        'edit'  =>  ['site_name','site_icon','site_copyright','site_detail'],
+    ];
 }

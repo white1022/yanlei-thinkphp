@@ -3,12 +3,11 @@ declare (strict_types = 1);
 
 namespace app\common\service;
 
-use app\common\model\Role as RoleModel;
-use app\common\model\Rule as RuleModel;
 use app\common\exception\BadRequest as BadRequestException;
 use app\common\model\Admin as AdminModel;
+use app\common\model\Role as RoleModel;
+use app\common\model\Rule as RuleModel;
 use app\common\service\Jwt as JwtService;
-use app\common\service\Log as LogService;
 use app\common\service\Redis as RedisService;
 
 class Admin

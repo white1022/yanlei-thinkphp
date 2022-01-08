@@ -24,12 +24,18 @@ Route::group(function () {
     // Storage分组
     Route::group('storage', function () {
         Route::rule('upload', 'upload', 'POST');
+        Route::rule('uploadByLayEdit', 'uploadByLayEdit', 'POST');
     })->prefix('Storage/');
 
     // login分组
     Route::group('login', function () {
         Route::rule('logout', 'logout', 'GET');
     })->prefix('Login/');
+
+    // index分组
+    Route::group('index', function () {
+        Route::rule('index', 'index', 'GET');
+    })->prefix('Index/');
 
     // admin分组
     Route::group('admin', function () {
@@ -62,13 +68,38 @@ Route::group(function () {
         Route::rule('edit', 'edit', 'POST');
         Route::rule('delete', 'delete', 'POST');
         Route::rule('rule', 'rule', 'GET');
-
     })->prefix('Role/');
 
-    // index分组
-    Route::group('index', function () {
-        Route::rule('index', 'index', 'GET');
-    })->prefix('Index/');
+    // region分组
+    Route::group('region', function () {
+        Route::rule('lists', 'lists', 'GET');
+        Route::rule('add', 'add', 'POST');
+        Route::rule('edit', 'edit', 'POST');
+        Route::rule('delete', 'delete', 'POST');
+        Route::rule('pid', 'pid', 'GET');
+    })->prefix('Region/');
+
+    // systemSetup分组
+    Route::group('systemSetup', function () {
+        Route::rule('edit', 'edit', 'POST');
+        Route::rule('info', 'info', 'GET');
+    })->prefix('SystemSetup/');
+
+    // log分组
+    Route::group('log', function () {
+        Route::rule('lists', 'lists', 'GET');
+        Route::rule('delete', 'delete', 'POST');
+    })->prefix('Log/');
+
+    // user分组
+    Route::group('user', function () {
+        Route::rule('lists', 'lists', 'GET');
+        Route::rule('add', 'add', 'POST');
+        Route::rule('edit', 'edit', 'POST');
+        Route::rule('delete', 'delete', 'POST');
+    })->prefix('User/');
+
+
 
 })->middleware(AuthMiddleware::class);
 

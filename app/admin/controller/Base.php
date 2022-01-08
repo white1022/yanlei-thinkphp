@@ -3,10 +3,10 @@ declare (strict_types = 1);
 
 namespace app\admin\controller;
 
+use app\BaseController;
 use app\common\exception\BadRequest as BadRequestException;
 use app\common\model\Admin as AdminModel;
 use app\common\service\Jwt as JwtService;
-use app\BaseController;
 use think\App;
 
 class Base extends BaseController

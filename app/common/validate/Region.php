@@ -3,8 +3,6 @@ declare (strict_types = 1);
 
 namespace app\common\validate;
 
-use think\Validate;
-
 class Region extends Base
 {
     /**
@@ -13,7 +11,11 @@ class Region extends Base
      *
      * @var array
      */
-	protected $rule = [];
+	protected $rule = [
+        'id' => ['require'],
+        'pid' => ['require', 'number'],
+        'name' => ['require'],
+    ];
 
     /**
      * 定义错误信息
@@ -22,4 +24,15 @@ class Region extends Base
      * @var array
      */
     protected $message = [];
+
+    /**
+     * 验证场景
+     *
+     * @var array
+     */
+    protected $scene = [
+        'add'  =>  ['pid','name'],
+        'edit'  =>  ['id','pid','name'],
+        'delete'  =>  ['id'],
+    ];
 }

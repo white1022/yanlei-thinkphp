@@ -4,10 +4,9 @@ declare (strict_types = 1);
 namespace app\middleware;
 
 use app\common\exception\BadRequest as BadRequestException;
-use app\common\exception\Unauthorized as UnauthorizedException;
 use app\common\exception\Base as BaseException;
+use app\common\exception\Unauthorized as UnauthorizedException;
 use app\common\service\Jwt as JwtService;
-use think\facade\Config;
 
 class Auth
 {

@@ -3,8 +3,6 @@ declare (strict_types = 1);
 
 namespace app\common\model;
 
-use think\Model;
-
 /**
  * @mixin \think\Model
  */
@@ -32,14 +30,6 @@ class User extends Base
     }
 
     //搜索器
-    public function searchNicknameAttr($query, $value, $data)
-    {
-        $query->where('nickname', 'like', '%' . $value . '%');
-    }
-    public function searchCreateTimeAttr($query, $value, $data)
-    {
-        $query->whereBetweenTime('create_time', $value[0], $value[1]);
-    }
 
     //模型关联
 
