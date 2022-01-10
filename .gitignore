@@ -8,6 +8,5 @@
 
 /.idea
 /.env
-/vendor/
 /runtime/
 /public/storage/
