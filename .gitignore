@@ -9,4 +9,5 @@
 /.idea
 /.env
 /runtime/
+/vendor/
 /public/storage/
