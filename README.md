@@ -3,10 +3,6 @@ ThinkPHP 6.0
 
 > 运行环境要求PHP7.1+。
 
-[官方应用服务市场](https://www.thinkphp.cn/service) | [`ThinkPHP`开发者扶持计划](https://sites.thinkphp.cn/1782366)
-
-ThinkPHPV6.0版本由[亿速云](https://www.yisu.com/)独家赞助发布。
-
 ## 主要新特性
 
 * 采用`PHP7`强类型（严格模式）
@@ -22,10 +18,10 @@ ThinkPHPV6.0版本由[亿速云](https://www.yisu.com/)独家赞助发布。
 * 对IDE更加友好
 * 统一和精简大量用法
 
-## 安装
+## 安装项目依赖
 
 ~~~
-composer create-project topthink/think tp 6.0.*
+composer install
 ~~~
 
 如果需要更新框架使用
@@ -33,24 +29,12 @@ composer create-project topthink/think tp 6.0.*
 composer update topthink/framework
 ~~~
 
-## 文档
+## 框架文档
 
 [完全开发手册](https://www.kancloud.cn/manual/thinkphp6_0/content)
 
-## 参与开发
+## 打赏
 
-请参阅 [ThinkPHP 核心框架包](https://github.com/top-think/framework)。
+如果你觉得这个项目有用，你可以给作者买一杯果汁🍹
 
-## 版权信息
-
-ThinkPHP遵循Apache2开源协议发布，并提供免费使用。
-
-本项目包含的第三方源码和二进制文件之版权信息另行标注。
-
-版权所有Copyright © 2006-2020 by ThinkPHP (http://thinkphp.cn)
-
-All rights reserved。
-
-ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
-
-更多细节参阅 [LICENSE.txt](LICENSE.txt)
+![image](https://github.com/white1022/yanlei-doc/image/donate.jpg)
