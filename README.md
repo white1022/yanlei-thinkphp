@@ -37,4 +37,4 @@ composer update topthink/framework
 
 如果你觉得这个项目有用，你可以给作者买一杯果汁🍹
 
-![image](https://github.com/white1022/yanlei-doc/image/donate.jpg)
+![image](https://white1022.github.io/image/donate.jpg)
