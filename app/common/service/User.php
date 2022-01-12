@@ -77,7 +77,7 @@ class User
     /*
      * 通过缓存获取用户信息
      */
-    public static function getUserInfoByCache(int $id = 0) :UserModel
+    public static function getUserInfoByCache(int $id = 0) :array
     {
         $redis = RedisService::getInstance();
         $key = 'user:'.$id;
@@ -85,9 +85,10 @@ class User
         if (!$cacheInfo) {
             $user = UserModel::findOrEmpty($id);
             if($user->isEmpty()) throw new BadRequestException(['errorMessage' => '用户不存在或已删除']);
+            $user = $user->toArray();
             $redis->setex($key, 3600, json_encode($user)); //缓存3600秒
         } else {
-            $user = json_decode($cacheInfo); //返回对象
+            $user = json_decode($cacheInfo, true);
         }
         return $user;
     }
