@@ -11,12 +11,6 @@ use Flc\Dysms\Request\SendSms;
  */
 class Sms
 {
-    //sms 配置
-    private static $config = [
-        'accessKeyId'    => 'LTAI4G7zrqzX3JKtNsoFCzBf', // AccessKeyID
-        'accessKeySecret' => 'Lel9LK1tTNA3ErBcONwHuLMmfbuJXW', // AccessKeySecret
-    ];
-
     /*
      * 发送短信
      * @param $mobile 手机号
@@ -26,7 +20,10 @@ class Sms
      */
     public static function send(string $mobile, string $captcha, string $sms_free_sign_name, string $sms_template_code) :bool
     {
-        $client  = new Client(self::$config);
+        $client = new Client([
+            'accessKeyId' => config('config.alidayu.accessKeyId'),
+            'accessKeySecret' => config('config.alidayu.accessKeySecret'),
+        ]);
         $sendSms = new SendSms;
         $sendSms->setPhoneNumbers($mobile);
         $sendSms->setSignName($sms_free_sign_name);
@@ -38,4 +35,6 @@ class Sms
         //$res = json_decode(json_encode($res),true);
         return $res->Code == 'OK' ? true : false;
     }
+
+
 }

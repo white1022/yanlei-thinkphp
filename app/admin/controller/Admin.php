@@ -24,7 +24,7 @@ class Admin extends Base
     public function add() :Json
     {
         (new AdminValidate())->goCheck('add');
-        AdminService::addEditAdminInfo();
+        AdminService::addAdminInfo();
         return returnResponse(200, '成功', []);
     }
 
@@ -34,7 +34,7 @@ class Admin extends Base
     public function edit() :Json
     {
         (new AdminValidate())->goCheck('edit');
-        AdminService::addEditAdminInfo();
+        AdminService::editAdminInfo();
         return returnResponse(200, '成功', []);
     }
 

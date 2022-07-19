@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace app\common\service;
 
-use app\common\exception\BadRequest as BadRequestException;
+use app\common\exception\Unauthorized as UnauthorizedException;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
-
 
 /*
  * jwt
@@ -201,9 +200,7 @@ class Jwt
             }
             return $this->newToken;
         }catch (\Exception $e){
-            throw new BadRequestException([
-                'errorMessage' => $e->getMessage(),
-            ]);
+            throw new UnauthorizedException(['errorMessage' => $e->getMessage()]);
         }
     }
 

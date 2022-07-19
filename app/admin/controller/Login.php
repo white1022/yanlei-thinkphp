@@ -18,7 +18,7 @@ class Login extends Base
     {
         (new AdminValidate())->goCheck('login');
         $admin = AdminService::getAdminInfoByLogin();
-        $token = AdminService::getTokenById($admin->id);
+        $token = AdminService::getAdminTokenById($admin->id);
         LogService::save(1, $admin->id, '登入');
         //return json(['token' => $token]);
         return returnResponse(200, '成功', ['token' => $token]);

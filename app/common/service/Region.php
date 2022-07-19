@@ -1,4 +1,5 @@
 <?php
+declare (strict_types = 1);
 
 namespace app\common\service;
 
@@ -70,6 +71,7 @@ class Region
      */
     public static function getPidList() :array
     {
-        return RegionModel::column('name', 'id');
+        $region = RegionModel::select()->toArray();
+        return generateTreeMap($region);
     }
 }

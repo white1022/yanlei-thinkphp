@@ -14,9 +14,20 @@ class SystemSetup extends Base
 	protected $rule = [
         'id' => ['require'],
         'site_name' => ['require'],
-        'site_icon' => ['require'],
+        'site_logo' => ['require'],
         'site_copyright' => ['require'],
         'site_detail' => ['require'],
+        'platform_phone' => ['require'],
+        'platform_wechat' => ['require'],
+        'platform_application' => ['require'],
+        'use_help' => ['require'],
+        'about_platform' => ['require'],
+        'platform_user_agreement' => ['require'],
+        'platform_privacy_policy' => ['require'],
+        'site_bottom_banner' => ['require'],
+        'search_keyword' => ['require'],
+        'goods_status' => ['require'],
+        'refund_reason' => ['require'],
     ];
 
     /**
@@ -33,6 +44,6 @@ class SystemSetup extends Base
      * @var array
      */
     protected $scene = [
-        'edit'  =>  ['site_name','site_icon','site_copyright','site_detail'],
+        'edit'  =>  ['site_name','site_logo','site_copyright','site_detail','platform_phone','platform_wechat','platform_application','use_help','about_platform','platform_user_agreement','platform_privacy_policy','site_bottom_banner','search_keyword','goods_status','refund_reason'],
     ];
 }

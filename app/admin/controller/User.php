@@ -47,4 +47,14 @@ class User extends Base
         UserService::deleteUserInfo();
         return returnResponse(200, '成功', []);
     }
+
+    /*
+     * 修改密码
+     */
+    public function password() :Json
+    {
+        (new UserValidate())->goCheck('password');
+        UserService::editUserPassword();
+        return returnResponse(200, '成功', []);
+    }
 }

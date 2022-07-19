@@ -17,6 +17,7 @@ class Redis
     private static $options = [
         'host' => '127.0.0.1',
         'port' => 6379,
+        //'password' => '',
     ];
 
     //构造方法私有化，防止外部创建实例

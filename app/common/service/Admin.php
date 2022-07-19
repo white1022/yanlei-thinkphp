@@ -4,6 +4,7 @@ declare (strict_types = 1);
 namespace app\common\service;
 
 use app\common\exception\BadRequest as BadRequestException;
+use app\common\exception\Unauthorized as UnauthorizedException;
 use app\common\model\Admin as AdminModel;
 use app\common\model\Role as RoleModel;
 use app\common\model\Rule as RuleModel;
@@ -18,7 +19,7 @@ class Admin
     public static function getAdminInfoByCache(int $id = 0) :array
     {
         $redis = RedisService::getInstance();
-        $key = 'admin:'.$id;
+        $key = 'ADMIN:'.$id;
         $cacheInfo = $redis->get($key);
         if (!$cacheInfo) {
             $admin = AdminModel::findOrEmpty($id);
@@ -49,15 +50,16 @@ class Admin
         if(!$admin->save()) throw new BadRequestException(['errorMessage' => '数据更新失败']);
         //写入缓存
         $redis = RedisService::getInstance();
-        $redis->setex('admin:'.$admin->id, 3600, json_encode($admin->toArray())); //缓存3600秒
+        $redis->setex('ADMIN:'.$admin->id, 3600, json_encode($admin->toArray())); //缓存3600秒
         //返回数据
         return $admin;
     }
 
     /*
-     * 通过id获取令牌，把id编码到token中
+     * 通过id获取管理员令牌
+     * 把id编码到token中
      */
-    public static function getTokenById(int $id = 0) :string
+    public static function getAdminTokenById(int $id = 0) :string
     {
         $token = JwtService::getInstance()
             ->setTableName('admin')
@@ -68,12 +70,28 @@ class Admin
     }
 
     /*
+     * 通过id验证管理员
+     */
+    public static function verifyAdminById(int $id = 0) :void
+    {
+        $admin = AdminModel::findOrEmpty($id);
+        if($admin->isEmpty()) throw new UnauthorizedException(['errorMessage' => '管理员不存在或已删除']);
+        if($admin->is_use == 2) throw new BadRequestException(['errorMessage' => '账号未启用']);
+        $redis = RedisService::getInstance();
+        $key = 'ADMIN:ID:' . $admin->id;
+        $adminId = $redis->get($key);
+        if(!$adminId){
+            $redis->setex($key, 3600, $admin->id);
+        }
+    }
+
+    /*
      * 通过管理员id删除缓存信息
      */
     public static function deleteCacheByAdminId(int $id = 0) :void
     {
         $redis = RedisService::getInstance();
-        $redis->del('admin:'.$id); //删除缓存
+        $redis->del('ADMIN:'.$id); //删除缓存
     }
 
     /*
@@ -89,7 +107,7 @@ class Admin
         }
         $ids = array_unique($ids);
         // 读取所属权限规则
-        $rules = RuleModel::where('id', 'in', $ids)->order('sort', 'desc')->select()->toArray();
+        $rules = RuleModel::where('id', 'in', $ids)->order(['sort'=>'asc','id'=>'desc'])->select()->toArray();
         return generateTree($rules);
     }
 
@@ -118,15 +136,13 @@ class Admin
             array_push($condition, ['is_use','=',$is_use]);
         }
 
-        $list = AdminModel::where($condition)
+        $list = AdminModel::with(['role'])
+            ->where($condition)
             ->order('create_time', 'desc')
             ->limit($limit)
             ->page($page)
             //->append(['is_use_text']) //追加其它的字段（该字段必须有定义获取器）
             ->select();
-        foreach ($list as $item){
-            $item->role; //获取管理员的所有角色
-        }
         $total = AdminModel::where($condition)
             ->count();
 
@@ -134,43 +150,47 @@ class Admin
     }
 
     /*
-     * 添加/修改管理员信息
+     * 添加管理员信息
      */
-    public static function addEditAdminInfo() :void
+    public static function addAdminInfo() :void
     {
-        if(input('post.id')){
-            $info = AdminModel::findOrEmpty(input('post.id'));
-            if($info->isEmpty()) throw new BadRequestException(['errorMessage' => '数据不存在或已删除']);
-            $count = AdminModel::where([
-                ['id', '<>', $info->id],
-                ['email', '=', input('post.email')],
-            ])->count();
-            if($count) throw new BadRequestException(['errorMessage' => '邮箱已存在']);
-            $count = AdminModel::where([
-                ['id', '<>', $info->id],
-                ['mobile', '=', input('post.mobile')],
-            ])->count();
-            if($count) throw new BadRequestException(['errorMessage' => '电话已存在']);
-            $res = $info->save(input('post.'));
-            if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
-            //更新关联的中间表数据
-            $info->role()->detach();
-            $info->role()->saveAll(input('post.role'));
-        }else{
-            $count = AdminModel::where([
-                ['email', '=', input('post.email')],
-            ])->count();
-            if($count) throw new BadRequestException(['errorMessage' => '邮箱已存在']);
-            $count = AdminModel::where([
-                ['mobile', '=', input('post.mobile')],
-            ])->count();
-            if($count) throw new BadRequestException(['errorMessage' => '电话已存在']);
-            $admin = new AdminModel();
-            $res = $admin->save(input('post.'));
-            if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
-            //增加关联的中间表数据
-            $admin->role()->saveAll(input('post.role'));
-        }
+        $count = AdminModel::where([
+            ['email', '=', input('post.email')],
+        ])->count();
+        if($count) throw new BadRequestException(['errorMessage' => '邮箱已存在']);
+        $count = AdminModel::where([
+            ['mobile', '=', input('post.mobile')],
+        ])->count();
+        if($count) throw new BadRequestException(['errorMessage' => '电话已存在']);
+        $admin = new AdminModel();
+        $res = $admin->save(input('post.'));
+        if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
+        //增加关联的中间表数据
+        $admin->role()->saveAll(input('post.role'));
+    }
+
+    /*
+     * 修改管理员信息
+     */
+    public static function editAdminInfo() :void
+    {
+        $info = AdminModel::findOrEmpty(input('post.id'));
+        if($info->isEmpty()) throw new BadRequestException(['errorMessage' => '数据不存在或已删除']);
+        $count = AdminModel::where([
+            ['id', '<>', $info->id],
+            ['email', '=', input('post.email')],
+        ])->count();
+        if($count) throw new BadRequestException(['errorMessage' => '邮箱已存在']);
+        $count = AdminModel::where([
+            ['id', '<>', $info->id],
+            ['mobile', '=', input('post.mobile')],
+        ])->count();
+        if($count) throw new BadRequestException(['errorMessage' => '电话已存在']);
+        $res = $info->save(input('post.'));
+        if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
+        //更新关联的中间表数据
+        $info->role()->detach();
+        $info->role()->saveAll(input('post.role'));
     }
 
     /*
@@ -232,7 +252,7 @@ class Admin
         if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
         //更新缓存
         $redis = RedisService::getInstance();
-        $key = 'admin:'.$info->id;
+        $key = 'ADMIN:'.$info->id;
         $cacheInfo = $redis->get($key);
         if ($cacheInfo) {
             $time = $redis->ttl($key); //返回剩余时间
@@ -255,7 +275,7 @@ class Admin
         if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
         //删除缓存
         $redis = RedisService::getInstance();
-        $redis->del('admin:'.$info->id);
+        $redis->del('ADMIN:'.$info->id);
     }
 
 

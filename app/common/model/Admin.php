@@ -9,21 +9,21 @@ namespace app\common\model;
 class Admin extends Base
 {
     //获取器
-    public function getAvatarAttr($value, $data)
+    /*public function getAvatarAttr($value, $data)
     {
         return $this->prefixUrl($value, $data);
-    }
-    public function getIsUseTextAttr($value, $data)
+    }*/
+    /*public function getIsUseTextAttr($value, $data)
     {
         $is_use = [1=>'是',2=>'否'];
         return $is_use[$data['is_use']];
-    }
+    }*/
 
     //修改器
-    public function setAvatarAttr($value, $data)
+    /*public function setAvatarAttr($value, $data)
     {
         return $this->originUrl($value, $data);
-    }
+    }*/
     public function setLastLoginIpAttr($value, $data)
     {
         return $this->ipAddress($value, $data);

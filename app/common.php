@@ -29,12 +29,42 @@ function decryption($data)
 }
 
 /*
+ * curl发送http请求
+ */
+function curl($url='', $method='', $header=[], $param=[], $ssl=false){
+    if(is_array($param)){
+        $param = http_build_query($param);
+    }
+    $ch = curl_init(); //初始化CURL句柄
+    curl_setopt($ch, CURLOPT_URL, $url); //设置请求的URL
+    //是否验证服务器证书
+    if($ssl){
+        // 为保证第三方服务器与微信服务器之间数据传输的安全性，所有微信接口采用https方式调用，必须使用下面2行代码打开ssl安全校验。
+        // 如果在部署过程中代码在此处验证失败，请到 http://curl.haxx.se/ca/cacert.pem 下载新的证书判别文件。
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+    }else{
+        //如果是https请求时，需要禁止ssl验证
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
+    }
+    curl_setopt ($ch, CURLOPT_HTTPHEADER, $header); //设置报文，如array('Content-type:application/json')
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST,$method); //设置请求方式，如"GET"，"POST"
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $param);//设置提交的字符串
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,true); //设为true把curl_exec()结果转化为字串，而不是直接输出
+    $output = curl_exec($ch); //执行CURL，返回json字符串
+    curl_close($ch); //释放CURL句柄
+    return json_decode($output,true);
+}
+
+/*
  * 生成无限极分类树
+ * 数据 $array
  */
 function generateTree($array = [])
 {
     /*$array = array(
-        array('id' => 1, 'name' => '超级管理员', 'pid' => '0', 'level' =>0) ,
+        array('id' => 1, 'name' => '管理员', 'pid' => '0', 'level' =>0) ,
         array('id' => 2, 'name' => '二级组', 'pid' => '1', 'level' =>1) ,
         array('id' => 3, 'name' => '二级组', 'pid' => '1', 'level' =>1) ,
         array('id' => 4, 'name' => '三级组', 'pid' => '2', 'level' =>2) ,
@@ -76,6 +106,56 @@ function getRegionTree($data, $pid = 0, $level = 0)
     }
     //这里树形结构已经生成 使用递归方法
     return $tree;
+}
+
+/*
+ * 生成无限极分类树图谱
+ * 数据 $data
+ * 父级 $pid
+ * 前缀 $prefix
+ */
+function generateTreeMap($data = [], $pid = 0, $prefix = '')
+{
+    /*$data = array(
+        array('id' => 1, 'name' => '管理员', 'pid' => '0') ,
+        array('id' => 2, 'name' => '二级组', 'pid' => '1') ,
+        array('id' => 3, 'name' => '二级组', 'pid' => '1') ,
+        array('id' => 4, 'name' => '三级组', 'pid' => '2') ,
+        array('id' => 5, 'name' => '二级组', 'pid' => '1') ,
+        array('id' => 6, 'name' => '三级组', 'pid' => '3') ,
+    );*/
+
+    static $icon = array('│', '├', '└');
+    static $nbsp = " ";
+    static $arr = array();
+    $number = 1;
+    foreach($data as $row) {
+        if($row['pid'] == $pid) {
+            $brotherCount = 0;
+            //判断当前有多少个兄弟分类
+            foreach($data as $r) {
+                if($row['pid'] == $r['pid']) {
+                    $brotherCount++;
+                }
+            }
+            if($brotherCount >0) {
+                $j = $k = '';
+                if($number == $brotherCount) {
+                    $j .= $icon[2];
+                    $k = $prefix ? $nbsp : '';
+                }else{
+                    $j .= $icon[1];
+                    $k = $prefix ? $icon[0] : '';
+                }
+                $spacer = $prefix ? $prefix . $j : '';
+                $row['name'] = $spacer.$row['name'];
+                $arr[] = $row;
+                $number++;
+                generateTreeMap($data, $row['id'], $prefix . $k . $nbsp);
+            }
+        }
+    }
+    return  $arr;
 }
 
 /*
@@ -160,7 +240,7 @@ function get_icon()
 /*
  * 生成随机字符串
  * $length 随机字符串的长度
- * $type 类型：1大写+小写+数字，2大写，3小写，4数字
+ * $type 类型：1大写+小写+数字，2大写，3小写，4数字，5大写+数字
  */
 function random_string($length = 16, $type = 1)
 {
@@ -169,6 +249,7 @@ function random_string($length = 16, $type = 1)
         2 => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
         3 => 'abcdefghijklmnopqrstuvwxyz',
         4 => '0123456789',
+        5 => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     ];
     $chars = $array[$type];
     $str = "";
@@ -255,12 +336,11 @@ function handle_crc_str($crc_str)
  * @param $n1 第一个数
  * @param $symbol 计算符号 + - * / %
  * @param $n2 第二个数
- * @param string $scale  精度 默认为小数点后两位
+ * @param int $scale  精度 默认为小数点后两位
  * @return  string
  */
-function pricecalc($n1, $symbol, $n2, $scale = '2')
+function pricecalc($n1, $symbol, $n2, $scale = 2)
 {
-    $res = "";
     switch ($symbol) {
         case "+"://加法
             $res = bcadd($n1, $n2, $scale);
@@ -278,7 +358,7 @@ function pricecalc($n1, $symbol, $n2, $scale = '2')
             $res = bcmod($n1, $n2, $scale);
             break;
         default:
-            $res = "";
+            $res = "0";
             break;
     }
     return $res;
@@ -289,6 +369,7 @@ function pricecalc($n1, $symbol, $n2, $scale = '2')
  * 价格格式化
  * @param int $price
  */
-function priceformat($price){
+function priceformat($price)
+{
     return number_format($price, 2, '.', '');
 }

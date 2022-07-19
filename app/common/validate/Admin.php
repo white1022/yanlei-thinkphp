@@ -42,8 +42,8 @@ class Admin extends Base
     protected $scene = [
         'login'  =>  ['email','password'],
         'lang'  =>  ['lang'],
-        'add'  =>  ['nickname','avatar','email','mobile','password','name','role'],
-        'edit'  =>  ['id','nickname','avatar','email','mobile','name','role'],
+        'add'  =>  ['nickname','avatar','email','mobile','password','name','is_use','role'],
+        'edit'  =>  ['id','nickname','avatar','email','mobile','name','is_use','role'],
         'delete'  =>  ['id'],
         'is_use'  =>  ['id','is_use'],
         'password'  =>  ['id','password', 'confirm_password'],

@@ -19,8 +19,14 @@ class User extends Base
         'password' => ['require', 'min' => 5],
         'mobile' => ['require', 'mobile'],
         'name' => ['require', 'min' => 2],
+        'sex' => ['require', 'number'],
+        'birthday' => ['require', 'number'],
+        'identity_card' => ['require', 'idCard'],
+        'level' => ['require', 'number'],
+        'balance' => ['require'],
         'is_use' => ['require', 'in' => '1,2'],
         'lang' => ['require', 'in' => 'zh-cn,en-us'],
+        'confirm_password' => ['require', 'min' => 5, 'confirm'=> 'password'], //用于确认密码
     ];
 
     /**
@@ -37,9 +43,10 @@ class User extends Base
      * @var array
      */
     protected $scene = [
-        'add'  =>  ['nickname','avatar','email','mobile','password','name'],
-        'edit'  =>  ['id','nickname','avatar','email','mobile','name'],
+        'add'  =>  ['nickname','avatar','email','mobile','password','birthday','is_use'],
+        'edit'  =>  ['id','nickname','avatar','email','mobile','birthday','is_use'],
         'delete'  =>  ['id'],
         'is_use'  =>  ['id','is_use'],
+        'password'  =>  ['id','password', 'confirm_password'],
     ];
 }

@@ -1,4 +1,5 @@
 <?php
+declare (strict_types = 1);
 
 namespace app\common\service;
 
@@ -73,7 +74,7 @@ class Role
      */
     public static function getRuleList() :array
     {
-        $rules = RuleModel::order('sort', 'desc')->select()->toArray();
+        $rules = RuleModel::order(['sort'=>'asc','id'=>'desc'])->select()->toArray();
         return generateTree($rules);
     }
 }

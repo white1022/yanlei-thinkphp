@@ -1,4 +1,5 @@
 <?php
+declare (strict_types = 1);
 
 namespace app\common\service;
 
@@ -31,8 +32,8 @@ class Rule
 
         $list = RuleModel::where($condition)
             ->order([
-                'sort' => 'desc',
-                'create_time' => 'desc',
+                'sort' => 'asc',
+                'id' => 'desc',
             ])->limit($limit)
             ->page($page)
             ->select();
@@ -74,7 +75,7 @@ class Rule
      */
     public static function getPidList() :array
     {
-        return RuleModel::column('title', 'id');
+        return RuleModel::order(['sort'=>'asc','id'=>'desc'])->column('title', 'id');
     }
 
     /*

@@ -6,8 +6,9 @@
 #? 通用匹配单个字符
 #* 通用匹配零个或多个字符
 
-/.idea
+/.idea/
 /.env
-/public/storage/
-/runtime/
-/vendor/
+/vendor/*
+/runtime/*
+/public/storage/*
+/public/apple-app-site-association
