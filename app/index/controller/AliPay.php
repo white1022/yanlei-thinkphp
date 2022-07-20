@@ -118,7 +118,6 @@ class AliPay extends Base
         if($scene == 1){
             $result = AliPayService::appPay($data);
         }elseif ($scene == 2){
-            $data['return_url'] = 'https://qingshi-index.meilanhu.vip/#/member/myorder?type=2'; //支付成功后页面的跳转地址
             $result = AliPayService::pcPay($data);
             //订单状态写入缓存
             $redis = RedisService::getInstance();
