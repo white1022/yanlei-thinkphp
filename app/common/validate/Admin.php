@@ -19,6 +19,7 @@ class Admin extends Base
         'password' => ['require', 'min' => 5],
         'mobile' => ['require', 'mobile'],
         'name' => ['require', 'min' => 2],
+        'introduction' => ['require', 'min' => 15, 'max' => 200],
         'is_use' => ['require', 'in' => '1,2'],
         'lang' => ['require', 'in' => 'zh-cn,en-us'],
         'role' => ['require', 'array'], //用于中间表数据

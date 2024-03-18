@@ -105,6 +105,92 @@ class Admin extends Base
         return returnResponse(200, '成功', []);
     }
 
+    /*
+     * 测试 vue 权限菜单
+     */
+    public function getMenuForVue() :Json
+    {
+        $list = [
+            [
+                'path'=>'/permission',
+                'component'=>'Layout',
+                'name'=>'permission',
+                'meta'=>['title'=>'权限管理', 'icon'=>'component'],
+                'redirect'=>'noRedirect',
+                'alwaysShow'=>'true',
+                'children'=>[
+                    [
+                        'path'=>'rule',
+                        'component'=>'empty/index', // Parent router-view
+                        'name'=>'rule',
+                        'meta'=>['title'=>'菜单管理', 'icon'=>'list'],
+                        'redirect'=>'noRedirect',
+                        'alwaysShow'=>'true',
+                        'children'=>[
+                            [
+                                'path'=>'list',
+                                'component'=>'rule/list',
+                                'name'=>'ruleList',
+                                'meta'=>['title'=>'菜单列表', 'icon'=>'list'],
+                            ]
+                        ],
+                    ],
+                    [
+                        'path'=>'role',
+                        'component'=>'empty/index', // Parent router-view
+                        'name'=>'role',
+                        'meta'=>['title'=>'角色管理', 'icon'=>'list'],
+                        'redirect'=>'noRedirect',
+                        'alwaysShow'=>'true',
+                        'children'=>[
+                            [
+                                'path'=>'list',
+                                'component'=>'role/list',
+                                'name'=>'roleList',
+                                'meta'=>['title'=>'角色列表', 'icon'=>'list'],
+                            ]
+                        ],
+                    ],
+                    [
+                        'path'=>'admin',
+                        'component'=>'empty/index', // Parent router-view
+                        'name'=>'admin',
+                        'meta'=>['title'=>'管理员管理', 'icon'=>'list'],
+                        'redirect'=>'noRedirect',
+                        'alwaysShow'=>'true',
+                        'children'=>[
+                            [
+                                'path'=>'list',
+                                'component'=>'admin/list',
+                                'name'=>'adminList',
+                                'meta'=>['title'=>'管理员列表', 'icon'=>'list'],
+                            ]
+                        ],
+                    ],
+                ],
+            ],
+
+            [
+                'path'=>'/book',
+                'component'=>'Layout',
+                'name'=>'book',
+                'meta'=>['title'=>'图书管理', 'icon'=>'documentation'],
+                'redirect'=>'noRedirect',
+                'alwaysShow'=>'true',
+                'children'=>[
+                    [
+                        'path'=>'/book/list',
+                        'component'=>'book/list',
+                        'name'=>'bookList',
+                        'meta'=>['title'=>'图书列表', 'icon'=>'list'],
+                    ]
+                ],
+            ],
+
+        ];
+        return returnResponse(200, '成功', $list);
+    }
+
 
 
 

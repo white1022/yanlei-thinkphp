@@ -56,6 +56,7 @@ Route::group(function () {
         Route::rule('edit', 'edit', 'POST');
         Route::rule('delete', 'delete', 'POST');
         Route::rule('getMenu', 'getMenu', 'GET');
+        Route::rule('getMenuForVue', 'getMenuForVue', 'GET');
         Route::rule('info', 'info', 'GET');
         Route::rule('password', 'password', 'POST');
         Route::rule('role', 'role', 'GET');
