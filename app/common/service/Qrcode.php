@@ -24,7 +24,7 @@ class Qrcode
     private static $builder;
 
     //qrcode 参数
-    private static $options = [
+    private static $option = [
         'data' => 'https://www.baidu.com',//自定义二维码内容
         'encoding' => 'UTF-8',//编码类型
         'errorCorrectionLevel' => '',//容错等级，分为L、M、Q、H四级
@@ -40,14 +40,14 @@ class Qrcode
         self::$builder = Builder::create()
             ->writer(new PngWriter())
             ->writerOptions([])
-            ->data(self::$options['data'])
+            ->data(self::$option['data'])
             ->encoding(new Encoding('UTF-8'))
             ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
             ->size(300)
             ->margin(10)
             ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
-            //->logoPath(self::$options['logoPath'])
-            ->labelText(self::$options['labelText'])
+            //->logoPath(self::$option['logoPath'])
+            ->labelText(self::$option['labelText'])
             ->labelFont(new NotoSans(20))
             ->labelAlignment(new LabelAlignmentCenter())
             ->build();
@@ -59,12 +59,12 @@ class Qrcode
     }
 
     //公有方法，用于获取实例
-    public static function getInstance(array $options = []) :Qrcode
+    public static function getInstance(array $option = []) :Qrcode
     {
-        if (is_null(self::$instance) || !empty($options)) {
-            if (!empty($options)) {
+        if (is_null(self::$instance) || !empty($option)) {
+            if (!empty($option)) {
                 //合并参数
-                self::$options = array_merge(self::$options, $options);
+                self::$option = array_merge(self::$option, $option);
             }
             self::$instance = new Qrcode();
         }

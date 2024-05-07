@@ -13,13 +13,6 @@ class Redis
     //私有属性，用于保存实例
     private static $instance;
 
-    //redis 参数
-    private static $options = [
-        'host' => '127.0.0.1',
-        'port' => 6379,
-        //'password' => '',
-    ];
-
     //构造方法私有化，防止外部创建实例
     private function __construct()
     {
@@ -31,17 +24,24 @@ class Redis
     }
 
     //公有方法，用于获取实例
-    public static function getInstance(array $options = []) :Client
+    public static function getInstance(array $option = []) :Client
     {
-        if (empty($options)) {
+        //redis 参数
+        $param = [
+            'host' => env('redis.host','127.0.0.1'),
+            'port' => env('redis.port',6379),
+            'password' => env('redis.password',null),
+        ];
+
+        if (empty($option)) {
             //判断实例有无创建，没有的话创建实例
             if(!(self::$instance instanceof Client)){
-                self::$instance = new Client(self::$options);
+                self::$instance = new Client($param);
             }
         } else {
             //合并参数
-            self::$options = array_merge(self::$options, $options);
-            self::$instance = new Client(self::$options);
+            $param = array_merge($param, $option);
+            self::$instance = new Client($param);
         }
         // 返回单例
         return self::$instance;

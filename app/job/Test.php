@@ -12,6 +12,8 @@ class Test
      * fire是消息队列默认调用的方法
      * $job 当前的任务对象
      * $data 发布任务时自定义的数据
+     * https://packagist.org/packages/topthink/think-queue
+     * https://packagist.org/packages/php-amqplib/php-amqplib
      * https://blog.csdn.net/qq_37544121/article/details/105225783
      * https://zhuanlan.zhihu.com/p/344026264
      */

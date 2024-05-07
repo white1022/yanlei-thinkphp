@@ -10,6 +10,9 @@ use app\common\model\Role as RoleModel;
 use app\common\model\Rule as RuleModel;
 use app\common\service\Jwt as JwtService;
 use app\common\service\Redis as RedisService;
+use think\facade\Db;
+use think\facade\Log;
+use think\Exception;
 
 class Admin
 {
@@ -174,23 +177,41 @@ class Admin
      */
     public static function editAdminInfo() :void
     {
-        $info = AdminModel::findOrEmpty(input('post.id'));
-        if($info->isEmpty()) throw new BadRequestException(['errorMessage' => '数据不存在或已删除']);
-        $count = AdminModel::where([
-            ['id', '<>', $info->id],
-            ['email', '=', input('post.email')],
-        ])->count();
-        if($count) throw new BadRequestException(['errorMessage' => '邮箱已存在']);
-        $count = AdminModel::where([
-            ['id', '<>', $info->id],
-            ['mobile', '=', input('post.mobile')],
-        ])->count();
-        if($count) throw new BadRequestException(['errorMessage' => '电话已存在']);
-        $res = $info->save(input('post.'));
-        if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
-        //更新关联的中间表数据
-        $info->role()->detach();
-        $info->role()->saveAll(input('post.role'));
+        //启动事务
+        Db::startTrans();
+        try {
+            //数据库加锁操作
+            $info = AdminModel::lock(true)->findOrEmpty(input('post.id'));
+            if($info->isEmpty()) throw new BadRequestException(['errorMessage' => '数据不存在或已删除']);
+            $count = AdminModel::where([
+                ['id', '<>', $info->id],
+                ['email', '=', input('post.email')],
+            ])->count();
+            if($count) throw new BadRequestException(['errorMessage' => '邮箱已存在']);
+            $count = AdminModel::where([
+                ['id', '<>', $info->id],
+                ['mobile', '=', input('post.mobile')],
+            ])->count();
+            if($count) throw new BadRequestException(['errorMessage' => '电话已存在']);
+            $res = $info->save(input('post.'));
+            if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
+            //更新关联的中间表数据
+            $info->role()->detach();
+            $info->role()->saveAll(input('post.role'));
+            //更新缓存
+            $redis = RedisService::getInstance();
+            $key = 'ADMIN:'.$info->id;
+            $cacheInfo = $redis->get($key);
+            if($cacheInfo) $redis->setex($key, 3600, json_encode($info->toArray())); //缓存3600秒
+            //sleep(10);
+            //提交事务
+            Db::commit();
+        }catch (Exception $exception) {
+            //回滚事务
+            Db::rollback();
+            Log::record('修改管理员信息--' . $exception->getMessage());
+            throw new BadRequestException(['errorMessage' => $exception->getMessage()]);
+        }
     }
 
     /*
@@ -208,6 +229,11 @@ class Admin
             if(!$res) throw new BadRequestException(['errorMessage' => '失败']);
             //删除关联的中间表数据
             $info->role()->detach();
+            //删除缓存
+            $redis = RedisService::getInstance();
+            $key = 'ADMIN:'.$info->id;
+            $cacheInfo = $redis->get($key);
+            if($cacheInfo) $redis->del($key);
         }
     }
 
