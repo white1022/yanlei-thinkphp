@@ -28,9 +28,9 @@ class Redis
     {
         //redis 参数
         $param = [
-            'host' => env('redis.host','127.0.0.1'),
-            'port' => env('redis.port',6379),
-            'password' => env('redis.password',null),
+            'host' => env('redis.host', '127.0.0.1'),
+            'port' => env('redis.port', 6379),
+            'password' => env('redis.password', null),
         ];
 
         if (empty($option)) {
@@ -43,6 +43,8 @@ class Redis
             $param = array_merge($param, $option);
             self::$instance = new Client($param);
         }
+        // 切换到指定的DB库
+        self::$instance->select(env('redis.select', 0));
         // 返回单例
         return self::$instance;
     }
